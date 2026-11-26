@@ -105,9 +105,13 @@ export default function BetTrackerApp() {
   // Odds conversions
   const dec = parseFloat(decimalOdds) || 0;
   const impliedProb = dec > 1 ? ((1 / dec) * 100).toFixed(2) : "0.00";
-  const americanOdds =
-    dec >= 2 ? `+${Math.round((dec - 1) * 100)}` : dec > 1 ? `${Math.round(-100 / (dec - 1))}` : "0";
-
+    const americanOdds =
+    dec >= 2
+      ? "+" + Math.round((dec - 1) * 100)
+      : dec > 1
+      ? "" + Math.round(-100 / (dec - 1))
+      : "0";
+  
   return (
     <div className="flex min-h-screen bg-[#0B0F19] text-slate-100 font-sans">
       {/* Sidebar */}
