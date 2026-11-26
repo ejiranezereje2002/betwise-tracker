@@ -74,7 +74,7 @@ export default function BetTrackerApp() {
 
     const newBet: Bet = {
       id: Date.now(),
-      date: new Date().toISOString().split("T")[0],
+      date: new Date().toISOString().slice(0, 10),
       event,
       sport,
       selection,
