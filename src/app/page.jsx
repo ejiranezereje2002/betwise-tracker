@@ -47,7 +47,7 @@ export default function BetTrackerApp() {
   const roi = totalStaked ? ((totalProfit / totalStaked) * 100).toFixed(1) : "0.0";
   const avgOdds = bets.length ? (bets.reduce((acc, b) => acc + b.odds, 0) / bets.length).toFixed(2) : "0.00";
 
-  const handleAddBet = (e: any) => {
+  const handleAddBet = (e) => {
     e.preventDefault();
     const numOdds = parseFloat(odds) || 1.0;
     const numStake = parseFloat(stake) || 0;
@@ -224,3 +224,4 @@ export default function BetTrackerApp() {
                   <span>Nov 1</span>
                   <span>Nov 8</span>
                   <span>Nov 15</span>
+                  <span>Nov 21</span>
