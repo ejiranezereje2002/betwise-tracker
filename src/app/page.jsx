@@ -223,5 +223,221 @@ export default function BetTrackerApp() {
                 <div className="flex justify-between text-[11px] text-slate-500 mt-2">
                   <span>Nov 1</span>
                   <span>Nov 8</span>
-                  <span>Nov 15</span>
+                  <span>Nov 15</span>                 
+            
+                </div>
+              </div>
+
+              <div className="bg-[#131926] border border-slate-800/80 rounded-xl p-6">
+                <h3 className="font-semibold mb-4">Recent Bets</h3>
+                <div className="space-y-4">
+                  {bets.slice(0, 5).map((bet) => (
+                    <div key={bet.id} className="flex justify-between items-start border-b border-slate-800/60 pb-3">
+                      <div>
+                        <p className="text-sm font-medium">{bet.event}</p>
+                        <p className="text-xs text-slate-400">
+                          {bet.sport} • €{bet.stake}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p
+                          className={
+                            bet.status === "Won"
+                              ? "text-sm font-semibold text-emerald-400"
+                              : bet.status === "Lost"
+                              ? "text-sm font-semibold text-rose-400"
+                              : "text-sm font-semibold text-amber-400"
+                          }
+                        >
+                          {bet.profit >= 0
+                            ? "+€" + bet.profit.toFixed(2)
+                            : "-€" + Math.abs(bet.profit).toFixed(2)}
+                        </p>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">
+                          {bet.odds.toFixed(2)} • {bet.status}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "My Bets" && (
+          <div className="bg-[#131926] border border-slate-800/80 rounded-xl overflow-hidden">
+            <div className="p-4 border-b border-slate-800 flex items-center gap-3">
+              <Search className="w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search teams, players, or sports..."
+                className="bg-transparent text-sm focus:outline-none w-full"
+              />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-[#0E1320] text-slate-400 text-xs uppercase">
+                  <tr>
+                    <th className="py-3 px-4">Date</th>
+                    <th className="py-3 px-4">Event</th>
+                    <th className="py-3 px-4">Selection</th>
+                    <th className="py-3 px-4">Odds</th>
+                    <th className="py-3 px-4">Stake</th>
+                    <th className="py-3 px-4">Status</th>
+                    <th className="py-3 px-4 text-right">Profit/Loss</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60">
+                  {bets.map((b) => (
+                    <tr key={b.id} className="hover:bg-slate-800/30">
+                      <td className="py-3 px-4 text-slate-400">{b.date}</td>
+                      <td className="py-3 px-4 font-medium">
+                        {b.event}
+                        <span className="block text-xs text-slate-500">{b.sport}</span>
+                      </td>
+                      <td className="py-3 px-4 text-slate-300">{b.selection}</td>
+                      <td className="py-3 px-4">{b.odds.toFixed(2)}</td>
+                      <td className="py-3 px-4">€{b.stake.toFixed(2)}</td>
+                      <td className="py-3 px-4">
+                        <span
+                          className={
+                            b.status === "Won"
+                              ? "px-2 py-0.5 rounded-full text-xs bg-emerald-500/10 text-emerald-400"
+                              : b.status === "Lost"
+                              ? "px-2 py-0.5 rounded-full text-xs bg-rose-500/10 text-rose-400"
+                              : "px-2 py-0.5 rounded-full text-xs bg-amber-500/10 text-amber-400"
+                          }
+                        >
+                          {b.status}
+                        </span>
+                      </td>
+                      <td
+                        className={
+                          b.status === "Lost"
+                            ? "py-3 px-4 text-right font-semibold text-rose-400"
+                            : "py-3 px-4 text-right font-semibold text-emerald-400"
+                        }
+                      >
+                        {b.profit >= 0
+                          ? "+€" + b.profit.toFixed(2)
+                          : "-€" + Math.abs(b.profit).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "Calculators" && (
+          <div className="max-w-3xl bg-[#131926] border border-slate-800/80 rounded-xl p-6">
+            <h3 className="font-semibold text-lg mb-4">Odds & Probability Converter</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Decimal Odds</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={decimalOdds}
+                  onChange={(e) => setDecimalOdds(e.target.value)}
+                  className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-3 py-2 text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">American Odds</label>
+                <input
+                  type="text"
+                  readOnly
+                  value={americanOdds}
+                  className="w-full bg-[#0B0F19] border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-300"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Implied Probability</label>
+                <input
+                  type="text"
+                  readOnly
+                  value={impliedProb + "%"}
+                  className="w-full bg-[#0B0F19] border border-slate-800 rounded-lg px-3 py-2 text-sm text-blue-400 font-semibold"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!["Dashboard", "My Bets", "Calculators"].includes(activeTab) && (
+          <div className="bg-[#131926] border border-slate-800/80 rounded-xl p-10 text-center">
+            <h3 className="text-lg font-semibold mb-2">{activeTab} Module</h3>
+            <p className="text-sm text-slate-400">
+              Connect a database or API endpoint to power live {activeTab.toLowerCase()} data.
+            </p>
+          </div>
+        )}
+      </main>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+          <div className="bg-[#131926] border border-slate-700 rounded-xl p-6 w-full max-w-md">
+            <h3 className="text-lg font-bold mb-4">Log New Bet</h3>
+            <form onSubmit={handleAddBet} className="space-y-4">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Match / Event</label>
+                <input
+                  required
+                  placeholder="e.g. Arsenal vs Liverpool"
+                  value={event}
+                  onChange={(e) => setEvent(e.target.value)}
+                  className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-3 py-2 text-sm"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Sport</label>
+                  <select
+                    value={sport}
+                    onChange={(e) => setSport(e.target.value)}
+                    className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <option>Soccer</option>
+                    <option>Basketball</option>
+                    <option>Hockey</option>
+                    <option>Football</option>
+                    <option>Tennis</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Status</label>
+                  <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-3 py-2 text-sm"
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Won">Won</option>
+                    <option value="Lost">Lost</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Selection</label>
+                <input
+                  required
+                  placeholder="e.g. Both Teams to Score"
+                  value={selection}
+                  onChange={(e) => setSelection(e.target.value)}
+                  className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-3 py-2 text-sm"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Decimal Odds</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    required
+                    value={odds}
+                    onChange={(e) => setOdds(e.target.value)}
+
                   <span>Nov 21</span>
